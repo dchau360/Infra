@@ -1,0 +1,21 @@
+#!/bin/bash
+## Run a command on all slurm nodes that are active
+## slurm_all hostname
+
+# Check if the user provided a command to run
+if [ "$#" -lt 1 ]; then
+  echo "Usage: $0 <command>"
+  exit 1
+fi
+
+# Join all the arguments to form the command
+COMMAND="$@"
+
+# Get the list of SLURM nodes that are not down
+NODES=$(sinfo -N -h | grep -v down | awk '{print $1}')
+
+# Loop through each node and run the command via SSH
+for NODE in $NODES; do
+  echo "Running command on $NODE..."
+  ssh "$NODE" "$COMMAND"
+done
