@@ -1,0 +1,4 @@
+#!/bin/bash
+# Show requested CPU, Memory, and GPU of all jobs
+echo -e "\e[94mRunning command:\e[0m \e[92msqueue --Format=jobid:9,partition:10,username:20,tres-alloc:51,numtasks:8,timeused:12,nodelist:10\e[0m"
+squeue --Format=jobid:9,partition:10,username:20,tres-alloc:51,numtasks:8,timeused:12,nodelist:10
