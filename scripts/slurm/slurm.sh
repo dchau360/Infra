@@ -1,0 +1,50 @@
+#!/bin/bash
+## This is wrapper script to drain and undrain nodes easily
+## slurm.sh drain $NODE1 $NODE2 $NODE[1-12]
+## slurm.sh undrain $NODE1 $NODE2 $NODE[1-12]
+
+# Check if at least two arguments were provided (operation and one node)
+if [ "$#" -lt 2 ]; then
+  echo "Usage: $0 <operation> <node1> [node2] ..."
+  echo "<operation> can be 'drain' or 'undrain'"
+  exit 1
+fi
+
+# The first argument is the operation
+operation=$1
+
+# Remove the first argument and keep the rest (node names)
+shift
+
+# Define color codes
+green='\033[0;32m'
+blue='\033[0;34m'
+reset='\033[0m'
+
+# Perform the operation based on the user's choice
+case "$operation" in
+  drain)
+    for node in "$@"; do
+      echo "Draining node: $node"
+      cmd="scontrol update NodeName=\"$node\" State=DRAIN Reason=\"KEEPDRAIN-Maintenance\""
+      echo -e "${blue}Running command:${reset} ${green}$cmd${reset}"
+      eval $cmd
+    done
+    ;;
+  undrain)
+    for node in "$@"; do
+      echo "Undraining node: $node"
+      cmd="scontrol update NodeName=\"$node\" State=RESUME"
+      echo -e "${blue}Running command:${reset} ${green}$cmd${reset}"
+      eval $cmd
+    done
+    ;;
+  *)
+    echo "Invalid operation: $operation"
+    echo "Usage: $0 <operation> <node1> [node2] ..."
+    echo "<operation> can be 'drain' or 'undrain'"
+    exit 1
+    ;;
+esac
+
+echo "Operation $operation completed on nodes: $@"
