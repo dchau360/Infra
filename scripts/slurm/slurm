@@ -1,7 +1,7 @@
 #!/bin/bash
 ## This is wrapper script to drain and undrain nodes easily
-## slurm.sh drain $NODE1 $NODE2 $NODE[1-12]
-## slurm.sh undrain $NODE1 $NODE2 $NODE[1-12]
+## slurm drain $NODE1 $NODE2 $NODE[1-12]
+## slurm undrain $NODE1 $NODE2 $NODE[1-12]
 
 # Check if at least two arguments were provided (operation and one node)
 if [ "$#" -lt 2 ]; then
