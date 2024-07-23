@@ -1,0 +1,2 @@
+## Command to run on all slurm nodes
+for i in $(sinfo -N -h |grep -v donw| awk '{print $1}'); do ssh $i "hostname; ls -al /etc/fstab "; done
